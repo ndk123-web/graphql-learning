@@ -14,7 +14,7 @@
 
 ---
 
-## 🎯 What is GraphQL?
+## What is GraphQL?
 
 GraphQL is a **query language** and **runtime** for APIs that gives clients the power to ask for exactly what they need. Think of it as a smart waiter who understands exactly what you want from the menu!
 
@@ -40,7 +40,7 @@ POST /graphql       → One endpoint for everything!
 
 ---
 
-## 🔥 The Big 3: Query, Mutation, Subscription
+## The Big 3: Query, Mutation, Subscription
 
 ### 1️⃣ **QUERY** - Reading Data 📖
 
@@ -281,7 +281,7 @@ subscription UserCreated {
 
 ---
 
-## 🏗️ Backend Architecture
+## Backend Architecture
 
 ### 📁 Project Structure
 ```
@@ -361,7 +361,7 @@ subscribe: () => pubsub.asyncIterator(['USER_CREATED'])
 
 ---
 
-## ⚛️ Frontend Implementation
+##  Frontend Implementation
 
 ### 📁 Project Structure
 ```
@@ -424,9 +424,9 @@ useSubscription(USER_CREATED_SUBSCRIPTION, {
 
 ---
 
-## 🌊 Data Flow Explanation
+## Data Flow Explanation
 
-### 📊 Complete Flow Diagram
+### Complete Flow Diagram
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
 │   CLIENT    │    │   SERVER    │    │  DATABASE   │
@@ -454,16 +454,16 @@ useSubscription(USER_CREATED_SUBSCRIPTION, {
        │←══════════════════│                   │
 ```
 
-### 🔄 Step-by-Step Flow
+### Step-by-Step Flow
 
-#### **Query Flow:**
+#### Query Flow:
 1. **Client** sends GraphQL query to server
 2. **Apollo Server** receives and parses query
 3. **Resolver** executes and fetches data
 4. **Server** returns JSON response
 5. **Client** updates UI with new data
 
-#### **Mutation Flow:**
+#### Mutation Flow:
 1. **Client** sends mutation with variables
 2. **Server** validates input data
 3. **Resolver** modifies data (create/update/delete)
@@ -471,7 +471,7 @@ useSubscription(USER_CREATED_SUBSCRIPTION, {
 5. **Server** returns updated data
 6. **Client** updates UI and refetches queries
 
-#### **Subscription Flow:**
+#### Subscription Flow:
 1. **Client** establishes WebSocket connection
 2. **Server** keeps connection alive
 3. **Mutation** triggers `pubsub.publish()`
@@ -481,9 +481,9 @@ useSubscription(USER_CREATED_SUBSCRIPTION, {
 
 ---
 
-## 🔍 Deep Dive: The Big 3
+## Deep Dive: The Big 3
 
-### 🔎 **QUERIES** - The Data Fetchers
+### QUERIES - The Data Fetchers
 
 **Purpose**: Read data without side effects (like GET requests)
 
@@ -844,9 +844,9 @@ useSubscription(USER_CREATED_SUBSCRIPTION, {
 
 ---
 
-## 📋 Setup Instructions
+## Setup Instructions
 
-### 🖥️ **Backend Setup**
+### Backend Setup
 ```bash
 # 1. Create backend directory
 mkdir graphql-backend && cd graphql-backend
@@ -900,7 +900,7 @@ npm run dev
 
 ---
 
-## 🧪 Testing Your API
+##  Testing Your API
 
 ### 🎯 **Using Apollo Studio**
 1. Open: `http://localhost:4000/graphql`
