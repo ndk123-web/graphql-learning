@@ -82,8 +82,17 @@ const typeDefs = `#graphql
 // Resolvers
 const resolvers = {
   Query: {
-    users: () => users,
-    
+    users: (_, __, context) => {
+
+      // HERE JWT AUTH 
+      // if (!context.user) {
+      //   console.log("Can'e Access Because UnAuthorized Request")
+      //   throw new Error("Can't Access")
+      // }
+
+      return users
+    },
+
     user: (_, { id }) => {
       const user = users.find(u => u.id === id);
       if (!user) {
@@ -91,7 +100,7 @@ const resolvers = {
       }
       return user;
     },
-    
+
     usersByDepartment: (_, { department }) => {
       return users.filter(u => u.department.toLowerCase() === department.toLowerCase());
     }
@@ -105,10 +114,10 @@ const resolvers = {
       };
       nextUserId++;
       users.push(newUser);
-      
+
       // Publish to subscription
       pubsub.publish('USER_CREATED', { userCreated: newUser });
-      
+
       return newUser;
     },
 
@@ -117,13 +126,13 @@ const resolvers = {
       if (userIndex === -1) {
         throw new Error(`User with ID ${id} not found`);
       }
-      
+
       // Update user with new data
       users[userIndex] = { ...users[userIndex], ...input };
-      
+
       // Publish to subscription
       pubsub.publish('USER_UPDATED', { userUpdated: users[userIndex] });
-      
+
       return users[userIndex];
     },
 
@@ -132,25 +141,39 @@ const resolvers = {
       if (userIndex === -1) {
         throw new Error(`User with ID ${id} not found`);
       }
-      
+
       users.splice(userIndex, 1);
-      
+
       // Publish to subscription
       pubsub.publish('USER_DELETED', { userDeleted: id });
-      
+
       return true;
     }
   },
 
   Subscription: {
     userCreated: {
-      subscribe: () => pubsub.asyncIterator(['USER_CREATED'])
+      subscribe: (_, __, { user }) => {
+
+      // FOR WEB SOCKET JWT AUTH 
+      /* 
+      
+       if (!user){
+        console.log("UnAuthorized in Subscription")
+        throw new Error("UnAuthorized in Subscription") 
+       }
+      
+      */
+       
+       return  pubsub.asyncIterator(['USER_CREATED'])
+      }
+
     },
-    
+
     userUpdated: {
       subscribe: () => pubsub.asyncIterator(['USER_UPDATED'])
     },
-    
+
     userDeleted: {
       subscribe: () => pubsub.asyncIterator(['USER_DELETED'])
     }
@@ -173,7 +196,33 @@ const wsServer = new WebSocketServer({
 });
 
 // Setup WebSocket server for GraphQL subscriptions
-const serverCleanup = useServer({ schema }, wsServer);
+const serverCleanup = useServer({
+  schema,
+  context: async (ctx) => {
+   
+   // FOR WEB SOCKET JWT AUTH
+   /*
+    // ctx.connectionParams contains data sent by client when connecting
+    const token = ctx.connectionParams?.authToken; // or 'Authorization' based on your client
+
+    if (!token) {
+      throw new Error("Unauthorized: No token provided");
+    }
+
+    let user;
+    try {
+      // Verify JWT (replace with your actual secret)
+      // user = jwt.verify(token.replace("Bearer ", ""), "SECRET_KEY");
+      user = "ndk"
+    } catch (err) {
+      throw new Error("Invalid or expired token");
+    }
+
+    return { user }; // available in Subscription resolvers
+    */
+
+  }
+}, wsServer);
 
 // Create Apollo Server
 const server = new ApolloServer({
@@ -181,7 +230,7 @@ const server = new ApolloServer({
   plugins: [
     // Proper shutdown for the HTTP server
     ApolloServerPluginDrainHttpServer({ httpServer }),
-    
+
     // Proper shutdown for the WebSocket server
     {
       async serverWillStart() {
@@ -198,7 +247,7 @@ const server = new ApolloServer({
 // Start the server
 async function startServer() {
   await server.start();
-  
+
   // Apply CORS and JSON middleware BEFORE GraphQL middleware
   app.use(
     '/graphql',
@@ -207,11 +256,30 @@ async function startServer() {
       credentials: true,
     }),
     express.json(),
+
+    // jwt auth 
     expressMiddleware(server, {
-      context: async ({ req }) => ({
-        // Add any context you need here
-        user: req.headers.authorization || null,
-      }),
+      context: async ({ req }) => {
+
+        // Here JWT AUTH LOGIC 
+        /* 
+
+        const token = req.headers.authorization
+        let user;
+
+        if (!token) {
+          console.log("Can'e Access Because UnAuthorized Request")
+          throw new Error("Unauthorized")
+        }
+
+        user = "ndk"
+
+        // THIS WILL BE SEND TO THE "CONTEXT" IN RESOLVERS ( MUTATION , QUERY , SUBSCRIPTION ) 
+        return { user } 
+
+        */
+
+      }
     })
   );
 
@@ -221,7 +289,7 @@ async function startServer() {
   });
 
   const PORT = process.env.PORT || 4000;
-  
+
   httpServer.listen(PORT, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
     console.log(`🔄 Subscriptions ready at ws://localhost:${PORT}/graphql`);
