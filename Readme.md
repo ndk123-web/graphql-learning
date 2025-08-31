@@ -900,7 +900,7 @@ npm run dev
 
 ---
 
-##  Testing Your API
+## Testing Your API
 
 ### 🎯 **Using Apollo Studio**
 1. Open: `http://localhost:4000/graphql`

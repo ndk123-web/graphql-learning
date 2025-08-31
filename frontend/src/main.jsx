@@ -34,9 +34,15 @@ const wsLink = new GraphQLWsLink(
 );
 
 // Split link to route operations
+// if query / mutation use httpLink
+// if subscription use wsLink
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
+
+    // if subsctiption then use wsLink else httpLink
+    // what definition.kind === "OperationDefinition"
+    // Ans -> query , mutation , subscription are under "OperationDefinition"
     return (
       definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'

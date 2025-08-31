@@ -4,6 +4,11 @@
 2. Mutation: Create , Edit , Delete , Update with Data From DB
 3. Subscription: For Web Socket Connection We Used Subscription
 
+## JWT For HTTP & Web Socket
+
+- `For HTTP → JWT in headers`
+- `For WS → JWT in connectionParams`
+
 ## JWT For Mutation and Query (for http req)
 
 - we need to declare or verify in `expressMiddleware()`
@@ -134,3 +139,35 @@
     }
   }
   ```
+
+## refetch
+
+- `refetch()` guarantees fresh data from the server and keeps Apollo's cache consistent for all components where `GraphqlQuery` is used
+- Thats the drawback because it also make network calls which is unnecessary
+- EX:
+    ```js
+    const { refetch: refetchUsers , loading , data , error } = useQuery(GET_ALL_USERS)
+    const { refetch: refetchPosts , loading , data, error  } = useQuery(GET_ALL_POSTS)
+
+    // then we can use manually wherver want to refetch the query
+    refetchPosts();
+    refetchUsers();
+    ```
+
+## refetchQueries
+
+- `refetchQueries` is an array of queries that will be refetched only that grahql `Queries` that we specified like below , after a mutation is completed
+- `refetchedQueries` only work with `Queries`
+- Ex:
+    ```js
+    const [createUser] = useMutation(CREATE_USER, {
+      refetchQueries: [{ query: GET_ALL_USERS }, { query: GET_ALL_POSTS }],
+    });
+    ```
+
+## In Short WorkFlow
+- React component → `useQuery()` → Apollo checks split() → finds main operation (query) → routes to `httpLink` → sends full query (fragments expanded) → backend resolves → response → UI updates.
+
+- React component → `useMutation()` → Apollo checks split() → finds main operation (mutation) → routes to `httpLink` → sends full query (fragments expanded) → backend resolves → response → UI updates.
+
+- React component → `useSubscription()` → Apollo checks split() → finds main operation (subscription) → routes to `wsLink` → sends full query (fragments expanded) → backend resolves → response → UI updates.
