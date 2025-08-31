@@ -1,0 +1,223 @@
+/* App.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-header {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-header h1 {
+  color: white;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.app-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+}
+
+.app-main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.todos-section, .users-section {
+  margin-bottom: 3rem;
+}
+
+.todos-section h2, .users-section h2 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.todos-grid, .users-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.todos-grid {
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+.users-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.todo-card, .user-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.todo-card:hover, .user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.todo-id {
+  background: #667eea;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 1.2rem;
+}
+
+.status.done {
+  color: #4caf50;
+}
+
+.status.pending {
+  color: #ff9800;
+}
+
+.todo-title {
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.todo-card.completed {
+  background: rgba(76, 175, 80, 0.1);
+  border-left: 4px solid #4caf50;
+}
+
+.todo-card.completed .todo-title {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.user-info {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+.user-info p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-header h3 {
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.username {
+  background: #764ba2;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+.user-card p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.address {
+  background: rgba(118, 75, 162, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+.address p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 1rem 0;
+}
+
+.loading {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+.error {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 2rem;
+  }
+  
+  .app-header p {
+    font-size: 1rem;
+  }
+  
+  .app-main {
+    padding: 1rem;
+  }
+  
+  .todos-grid, .users-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .todo-card, .user-card {
+    padding: 1rem;
+  }
+}
